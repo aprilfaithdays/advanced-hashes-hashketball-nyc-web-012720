@@ -348,7 +348,6 @@ def winning_team
 end
 
 
-
 def player_with_longest_name
 characters = 0
   players.each do |player_name|
