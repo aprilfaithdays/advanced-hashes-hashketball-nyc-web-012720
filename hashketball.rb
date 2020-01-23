@@ -289,6 +289,65 @@ def players
 end
 
 
+def home_points
+  points = 0
+  game_hash.each do |teams, details|
+    if teams == :home
+      details.each do |general, info|
+        if general == :players
+          info.each do |stats|
+            points += stats[:points]
+          end
+       end
+      end
+    end
+  end
+  points
+end
+
+
+def away_points
+  points = 0
+  game_hash.each do |teams, details|
+    if teams == :away
+      details.each do |general, info|
+        if general == :players
+          info.each do |stats|
+            points += stats[:points]
+          end
+       end
+      end
+    end
+  end
+  points
+end
+
+
+def all_points
+  points = {}
+  points[game_hash[:home][:team_name]] = home_points
+  points[game_hash[:away][:team_name]] = away_points
+  points
+end
+
+
+def winning_team
+  # add up the points for :home and :away teams separately
+  # return team with larger points
+  winning_points = 0
+  all_points.each do |team, team_total|
+    if team_total > winning_points
+      winning_points = team_total
+    end
+  end
+  all_points.each do |team, team_total|
+    if team_total == winning_points
+      return team
+    end
+  end
+end
+
+
 
 def player_with_longest_name
 characters = 0
