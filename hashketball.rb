@@ -280,7 +280,22 @@ def most_points_scored
 end
 
 
+def players
+  all_players = []
+  all_stats.each do |stats|
+    all_players << stats[:player_name]
+  end
+  all_players
+end
+
+
+
 def player_with_longest_name
   
 end
+
+
+
+
+
 
