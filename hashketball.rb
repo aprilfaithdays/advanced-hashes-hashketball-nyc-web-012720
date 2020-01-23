@@ -258,8 +258,8 @@ def big_shoe_rebounds
     end
   end
   all_stats.each do |stats|
-    if stats[:points] == points
-      return stats[:player_name]
+    if stats[:shoe] == shoe
+      return stats[:rebounds]
     end
   end
 end
