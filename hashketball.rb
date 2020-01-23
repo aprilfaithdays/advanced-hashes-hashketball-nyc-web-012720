@@ -364,7 +364,14 @@ end
 
 
 def long_name_steals_a_ton?
-  
+  steals = 0
+  all_stats.each do |stats|
+    binding.pry
+    if stats[:steals] > steals
+      steals = stats[:setals]
+    end
+  end
+  steals
 end
 
 
