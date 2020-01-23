@@ -210,22 +210,56 @@ def player_stats(player_name)
 end
 
 
-def big_shoe_rebounds
-  shoe_size = 0
+# def big_shoe_rebounds
+#   shoe_size = 0
+#   game_hash.each do |teams, details|
+#     details.each do |general, info|
+#       if general == :players
+#         info.each do |stats|
+#           if stats[:shoe] > shoe_size
+#             shoe_size = stats[:shoe]
+#           end
+#         end
+#         info.each do |stats|
+#           if stats[:shoe] == shoe_size
+#             return stats[:rebounds]
+#           end
+#         end
+#       end
+#     end
+#   end
+# end
+
+
+def all_stats
+  # set empty array
+  # merge :home and :away teams and save to empty hash
+  # return updated array
+  
+  all_player_stats = []
   game_hash.each do |teams, details|
     details.each do |general, info|
       if general == :players
-        info.each do |stats|
-          if stats[:shoe] > shoe_size
-            shoe_size = stats[:shoe]
-          end
-        end
-        info.each do |stats|
-          if stats[:shoe] == shoe_size
-            return stats[:rebounds]
-          end
-        end
+       info.each do |stats|
+        all_player_stats << stats
+       end
       end
+    end
+  end
+  all_player_stats
+end
+
+
+def big_shoe_rebounds
+  shoe = 0
+  all_stats.each do |stats|
+    if stats[:shoe] > shoe
+      shoe = stats[:shoe]
+    end
+  end
+  all_stats.each do |stats|
+    if stats[:shoe] == shoe
+      return stats[:rebounds]
     end
   end
 end
@@ -233,20 +267,112 @@ end
 
 def most_points_scored
   points = 0
+  all_stats.each do |stats|
+    if stats[:points] > points
+      points = stats[:points]
+    end
+  end
+  all_stats.each do |stats|
+    if stats[:points] == points
+      return stats[:player_name]
+    end
+  end
+end
+
+
+def players
+  all_players = []
+  all_stats.each do |stats|
+    all_players << stats[:player_name]
+  end
+  all_players
+end
+
+
+def home_points
+  points = 0
   game_hash.each do |teams, details|
-    details.each do |general, info|
-      if general == :players
-        info.each do |stats|
-          if stats[:points] > points
-            points = stats[:points]
+    if teams == :home
+      details.each do |general, info|
+        if general == :players
+          info.each do |stats|
+            points += stats[:points]
           end
-        end
-        info.each do |stats|
-          if stats[:points] == points
-            return stats[:player_name]
-          end
-        end
+       end
       end
+    end
+  end
+  points
+end
+
+
+def away_points
+  points = 0
+  game_hash.each do |teams, details|
+    if teams == :away
+      details.each do |general, info|
+        if general == :players
+          info.each do |stats|
+            points += stats[:points]
+          end
+       end
+      end
+    end
+  end
+  points
+end
+
+
+def all_points
+  points = {}
+  points[game_hash[:home][:team_name]] = home_points
+  points[game_hash[:away][:team_name]] = away_points
+  points
+end
+
+
+def winning_team
+  # add up the points for :home and :away teams separately
+  # return team with larger points
+  winning_points = 0
+  all_points.each do |team, team_total|
+    if team_total > winning_points
+      winning_points = team_total
+    end
+  end
+  all_points.each do |team, team_total|
+    if team_total == winning_points
+      return team
+    end
+  end
+end
+
+
+def player_with_longest_name
+characters = 0
+  players.each do |player_name|
+    if player_name.count(player_name) > characters
+      characters = player_name.count(player_name)
+    end
+  end
+  players.each do |player_name|
+    if player_name.count(player_name) == characters
+      return player_name
+    end
+  end
+end
+
+
+def long_name_steals_a_ton?
+  points = 0
+  all_stats.each do |stats|
+    if stats[:steals] > points
+      points = stats[:steals]
+    end
+  end
+  all_stats.each do |stats|
+    if stats[:player_name] == player_with_longest_name
+      return true
     end
   end
 end
