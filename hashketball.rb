@@ -373,17 +373,6 @@ def long_name_steals_a_ton?
   steals
 end
 
-  shoe = 0
-  all_stats.each do |stats|
-    if stats[:shoe] > shoe
-      shoe = stats[:shoe]
-    end
-  end
-  all_stats.each do |stats|
-    if stats[:shoe] == shoe
-      return stats[:rebounds]
-    end
-  end
 
 
 
