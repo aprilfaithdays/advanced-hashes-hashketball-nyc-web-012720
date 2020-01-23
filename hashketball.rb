@@ -210,22 +210,56 @@ def player_stats(player_name)
 end
 
 
-def big_shoe_rebounds
-  shoe_size = 0
+# def big_shoe_rebounds
+#   shoe_size = 0
+#   game_hash.each do |teams, details|
+#     details.each do |general, info|
+#       if general == :players
+#         info.each do |stats|
+#           if stats[:shoe] > shoe_size
+#             shoe_size = stats[:shoe]
+#           end
+#         end
+#         info.each do |stats|
+#           if stats[:shoe] == shoe_size
+#             return stats[:rebounds]
+#           end
+#         end
+#       end
+#     end
+#   end
+# end
+
+
+def all_stats
+  # set empty array
+  # merge :home and :away teams and save to empty hash
+  # return updated array
+  
+  all_player_stats = []
   game_hash.each do |teams, details|
     details.each do |general, info|
       if general == :players
-        info.each do |stats|
-          if stats[:shoe] > shoe_size
-            shoe_size = stats[:shoe]
-          end
-        end
-        info.each do |stats|
-          if stats[:shoe] == shoe_size
-            return stats[:rebounds]
-          end
-        end
+       info.each do |stats|
+        all_player_stats << stats
+       end
       end
+    end
+  end
+  all_player_stats
+end
+
+
+def big_shoe_rebounds
+  shoe = 0
+  all_stats.each do |stats|
+    if stats[:shoe] > shoe
+      shoe = stats[:shoe]
+    end
+  end
+  all_stats.each do |stats|
+    if stats[:points] == points
+      return stats[:player_name]
     end
   end
 end
@@ -233,20 +267,14 @@ end
 
 def most_points_scored
   points = 0
-  game_hash.each do |teams, details|
-    details.each do |general, info|
-      if general == :players
-        info.each do |stats|
-          if stats[:points] > points
-            points = stats[:points]
-          end
-        end
-        info.each do |stats|
-          if stats[:points] == points
-            return stats[:player_name]
-          end
-        end
-      end
+  all_stats.each do |stats|
+    if stats[:points] > points
+      points = stats[:points]
+    end
+  end
+  all_stats.each do |stats|
+    if stats[:points] == points
+      return stats[:player_name]
     end
   end
 end
