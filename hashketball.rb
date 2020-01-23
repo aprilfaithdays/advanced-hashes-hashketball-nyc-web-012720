@@ -364,13 +364,17 @@ end
 
 
 def long_name_steals_a_ton?
-  steals = 0
+  points = 0
   all_stats.each do |stats|
-    if stats[:steals] > steals
-      steals = stats[:setals]
+    if stats[:steals] > points
+      points = stats[:steals]
     end
   end
-  steals
+  all_stats.each do |stats|
+    if stats[:player_name] == player_with_longest_name
+      return true
+    end
+  end
 end
 
 
