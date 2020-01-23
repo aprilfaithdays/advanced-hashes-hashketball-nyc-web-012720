@@ -291,7 +291,17 @@ end
 
 
 def player_with_longest_name
-  
+characters = 0
+  players.each do |player_name|
+    if player_name.count(player_name) > characters
+      characters = player_name.count(player_name)
+    end
+  end
+  players.each do |player_name|
+    if player_name.count(player_name) == characters
+      return player_name
+    end
+  end
 end
 
 
